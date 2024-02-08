@@ -11,7 +11,7 @@ export interface HandlerOptions {
     [key: string]: any;
 }
 
-export type Callback = (req: IncomingMessage, res: ServerResponse, options: HandlerOptions) => void;
+export type Callback = (req: IncomingMessage, res: ServerResponse, options?: HandlerOptions) => void;
 
 export interface Routes {
     [method: string]: {
@@ -31,15 +31,30 @@ export class Router {
     };
   }
 
+  addRoute(method: METHODS, path: string, cb: Callback) {
+    const chunks = path.split('/').reduce((acc: string[], chunk) => {
+      const match = chunk.match(/(?<param>(?<=\$\{|\{)\S+(?=\}))/);
+      const paramName = match?.groups?.param;
+      acc.push(paramName ? `(?<${paramName}>\\S+)` : chunk);
+      return acc;
+    }, []);
+    const pathString = `^${chunks.join('/')}\\/?$`;
+    this.routes[method][pathString] = cb;
+  }
+
   public get(path: string, cb: http.RequestListener): void {
+    this.addRoute(METHODS.GET, path, cb);
   }
 
   public post(path: string, cb: http.RequestListener): void {
+    this.addRoute(METHODS.POST, path, cb);
   }
 
   public delete(path: string, cb: http.RequestListener): void {
+    this.addRoute(METHODS.DELETE, path, cb);
   }
 
   public update(path: string, cb: http.RequestListener): void {
+    this.addRoute(METHODS.PUT, path, cb);
   }
 }
