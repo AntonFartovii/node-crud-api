@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "ts-node index.ts",
+    "start:dev": "nodemon index.ts",
     "start:prod": "tsc && node ./dist/index.js",
     "lint:fix": "eslint --fix",
     "format: fix": "prettier . --write"
@@ -14,6 +14,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.11.9",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
