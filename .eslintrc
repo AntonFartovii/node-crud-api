@@ -17,6 +17,7 @@
     "node": true
   },
   "rules": {
+    "no-unused-vars": "off",
     "no-var": "error",
     "semi": "error",
     "indent": [

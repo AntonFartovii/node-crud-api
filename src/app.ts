@@ -1,11 +1,19 @@
 import * as http from 'http';
 import {RequestListener} from 'http';
+import {Router, Routes} from './Router';
+
+export interface RoutesExpress {
+    [path: string]: Routes;
+}
 
 export class ExpressClone {
+  routes: RoutesExpress;
   private server: http.Server;
 
   constructor() {
     this.server = http.createServer();
+    this.routes = {};
+    this.server.on('request', this.handlerRequest);
   }
 
   public on(event: 'request', listener: RequestListener) {
@@ -16,19 +24,12 @@ export class ExpressClone {
     this.server.listen(port, cb);
   }
 
-  public use() {
-
+  public useRouter(path: string, router: Router) {
+    this.routes[path] = router.routes;
   }
 
-  public get(path: string, cb: http.RequestListener): void {
-  }
-
-  public post(path: string, cb: http.RequestListener): void {
-  }
-
-  public delete(path: string, cb: http.RequestListener): void {
-  }
-
-  public update(path: string, cb: http.RequestListener): void {
+  private handlerRequest(req: http.IncomingMessage, res: http.ServerResponse) {
+    const {url, method} = req;
+    console.log(method, ' ', url);
   }
 }
