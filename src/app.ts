@@ -1,9 +1,10 @@
 import * as http from 'http';
-import {Router, Routes} from './Router';
-import {parsePathExpress} from './utils';
+import { Router, Routes } from './Router';
+import { parsePathExpress } from './utils';
+import { HttpError } from './exeptions';
 
 export interface RoutesExpress {
-    [path: string]: Routes;
+  [path: string]: Routes;
 }
 
 class ExpressClone {
@@ -20,27 +21,40 @@ class ExpressClone {
   }
 
   public useRouter(path: string, router: Router) {
-    this.routes = {...this.routes, [path]: router.routes};
+    this.routes = { ...this.routes, [path]: router.routes };
     this.server.on('request', this.handlerRequest.bind(this));
   }
 
-  private handlerRequest(req: http.IncomingMessage, res: http.ServerResponse) {
-    const {url, method} = req;
+  private async handlerRequest(req: http.IncomingMessage, res: http.ServerResponse) {
+    const { url, method } = req;
     const [mainPath, routePath] = parsePathExpress(url);
+    try {
+      if (mainPath && routePath && method) {
+        const routes = this.routes[mainPath] && this.routes[mainPath][method!];
 
-    if (mainPath && routePath && method) {
-      const routes = this.routes[mainPath][method!];
-
-      const matchedRoute = Object.keys(routes).find((pathString) => {
-        const routeRegExp = new RegExp(pathString);
-        return routeRegExp.test(routePath!);
-      });
-
-      if (matchedRoute) {
-        routes[matchedRoute](req, res);
+        if (routes) {
+          const matchedRoute = Object.keys(routes).find((pathString) => {
+            const routeRegExp = new RegExp(pathString);
+            return routeRegExp.test(routePath!);
+          });
+          if (matchedRoute) {
+            await routes[matchedRoute](req, res);
+          } else {
+            throw new HttpError(404, 'This endpoint does not exist!');
+          }
+        } else {
+          throw new HttpError(404, ' does not exist');
+        }
       } else {
-        res.writeHead(404, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify({error: 'This endpoint does not exist!'}));
+        throw new HttpError(404, ' does not exist');
+      }
+    } catch (error) {
+      if (error instanceof HttpError) {
+        res.writeHead(error.statusCode, { 'Content-type': 'application/json' });
+        res.end(JSON.stringify(error.getData()));
+      } else {
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'This endpoint does not exist!' }));
       }
     }
   }

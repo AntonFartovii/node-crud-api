@@ -17,6 +17,7 @@
     "node": true
   },
   "rules": {
+    "no-useless-catch": "off",
     "no-unused-vars": "off",
     "no-var": "error",
     "semi": "error",
