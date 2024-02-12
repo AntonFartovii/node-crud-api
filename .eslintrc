@@ -1,0 +1,42 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "prettier",
+    "eslint-config-prettier"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parserOptions": {
+    "tsconfigRootDir": "./",
+    "project": "tsconfig.json",
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "parser": "@typescript-eslint/parser",
+  "root": true,
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "no-undef": "off",
+    "no-useless-catch": "off",
+    "no-unused-vars": "off",
+    "no-var": "error",
+    "semi": "error",
+    "indent": [
+      "error",
+      2
+    ],
+    "comma-dangle": [
+      "error",
+      "only-multiline"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ]
+  }
+}
