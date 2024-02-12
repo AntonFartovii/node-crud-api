@@ -1,7 +1,3 @@
-import { ServerResponse } from 'http';
-
-const headers = { 'Content-Type': 'application/json' };
-
 export class HttpError extends Error {
   statusCode: number;
   message: string;
@@ -19,8 +15,3 @@ export class HttpError extends Error {
     };
   }
 }
-
-export const ErrorHandler = (res: ServerResponse, errorData: HttpError) => {
-  res.writeHead(errorData.statusCode, headers);
-  res.end(JSON.stringify(errorData));
-};

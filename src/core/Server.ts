@@ -1,14 +1,16 @@
 import * as http from 'http';
-import { Router, Routes } from './Router';
-import { parsePathExpress } from './utils';
-import { HttpError } from './exeptions';
+import {Router, Routes} from './Router';
+import {parsePathExpress} from './utils';
+import {HttpError} from '../exeptions';
 
-export interface RoutesExpress {
-  [path: string]: Routes;
+export interface RoutesServer {
+    [path: string]: Routes;
 }
 
-class ExpressClone {
-  routes: RoutesExpress;
+const headers = {'Content-Type': 'application/json'};
+
+class Server {
+  routes: RoutesServer;
   private server: http.Server;
 
   constructor() {
@@ -21,12 +23,12 @@ class ExpressClone {
   }
 
   public useRouter(path: string, router: Router) {
-    this.routes = { ...this.routes, [path]: router.routes };
+    this.routes = {...this.routes, [path]: router.routes};
     this.server.on('request', this.handlerRequest.bind(this));
   }
 
   private async handlerRequest(req: http.IncomingMessage, res: http.ServerResponse) {
-    const { url, method } = req;
+    const {url, method} = req;
     const [mainPath, routePath] = parsePathExpress(url);
     try {
       if (mainPath && routePath && method) {
@@ -50,14 +52,14 @@ class ExpressClone {
       }
     } catch (error) {
       if (error instanceof HttpError) {
-        res.writeHead(error.statusCode, { 'Content-type': 'application/json' });
+        res.writeHead(error.statusCode, headers);
         res.end(JSON.stringify(error.getData()));
       } else {
-        res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'This endpoint does not exist!' }));
+        res.writeHead(404, headers);
+        res.end(JSON.stringify({error: 'This endpoint does not exist!'}));
       }
     }
   }
 }
 
-export default ExpressClone;
+export default Server;

@@ -1,19 +1,20 @@
 import userService from '../services/user.service';
-import { IncomingMessage, ServerResponse } from 'http';
-import { CreateUserDto, UpdateUserDto } from '../models/user.entity';
-import { getRequestBody, getRequestParamId, responseData } from '../utils';
-import { HttpError } from '../exeptions';
+import {IncomingMessage, ServerResponse} from 'http';
+import {CreateUserDto, UpdateUserDto} from '../models/user.entity';
+import {getRequestBody, getRequestParamId, responseData} from '../core/utils';
+import {HttpError} from '../exeptions';
 
 export class UserController {
-  constructor() {}
+  constructor() {
+  }
 
   async create(req: IncomingMessage, res: ServerResponse) {
     try {
-      const { age, hobbies, username } = (await getRequestBody(req)) as CreateUserDto;
+      const {age, hobbies, username} = (await getRequestBody(req)) as CreateUserDto;
       if (!age || !hobbies || !username) {
         throw new HttpError(400, 'request body does not contain required fields');
       }
-      const dto = { age, hobbies, username } as CreateUserDto;
+      const dto = {age, hobbies, username} as CreateUserDto;
       const data = await userService.create(dto);
       responseData(res, 201, data);
     } catch (error) {
@@ -43,7 +44,7 @@ export class UserController {
   async update(req: IncomingMessage, res: ServerResponse) {
     try {
       const id = getRequestParamId(req);
-      const { age, hobbies, username } = (await getRequestBody(req)) as UpdateUserDto;
+      const {age, hobbies, username} = (await getRequestBody(req)) as UpdateUserDto;
       const dto: UpdateUserDto = {};
       if (age) dto.age = age;
       if (username) dto.username = username;

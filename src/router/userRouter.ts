@@ -1,5 +1,5 @@
-import { Router } from '../Router';
-import { UserController } from '../controllers/user.controller';
+import {Router} from '../core/Router';
+import {UserController} from '../controllers/user.controller';
 
 const userController = new UserController();
 

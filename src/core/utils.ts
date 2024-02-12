@@ -1,7 +1,7 @@
-import { validate as uuidValidate, version as uuidVersion } from 'uuid';
-import { HttpError } from './exeptions';
-import { IncomingMessage, ServerResponse } from 'http';
-import { CreateUserDto, User } from './models/user.entity';
+import {validate as uuidValidate, version as uuidVersion} from 'uuid';
+import {HttpError} from '../exeptions';
+import {IncomingMessage, ServerResponse} from 'http';
+import {User} from '../models/user.entity';
 
 export function parsePathExpress(path?: string) {
   if (!path) {
@@ -27,18 +27,18 @@ export const responseData = (
   statusCode: number,
   data?: User | User[] | string | null
 ) => {
-  res.writeHead(statusCode, { 'Content-type': 'application/json' });
+  res.writeHead(statusCode, {'Content-type': 'application/json'});
   res.end(JSON.stringify(data));
 };
 
-export const getRequestBody = async (req: IncomingMessage) => {
+export const getRequestBody = async (req: IncomingMessage): Promise<any> => {
   return new Promise((res, rej) => {
     let body = '';
     req.on('data', (chunk) => {
       body += chunk.toString();
     });
     req.on('end', async () => {
-      res(JSON.parse(body) as CreateUserDto);
+      res(JSON.parse(body));
     });
     req.on('error', (err) => {
       rej(err);
