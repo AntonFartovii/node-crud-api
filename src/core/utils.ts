@@ -25,25 +25,24 @@ export const uuidValidateV4 = (uuid: string): boolean => {
 export const responseData = (
   res: ServerResponse,
   statusCode: number,
-  data?: User | User[] | string | null
+  data?: User | User[] | { message: string } | null
 ) => {
   res.writeHead(statusCode, { 'Content-type': 'application/json' });
   res.end(JSON.stringify(data));
 };
 
-export const getRequestBody = async (req: IncomingMessage): Promise<any> => {
-  return new Promise((res, rej) => {
-    let body = '';
-    req.on('data', (chunk) => {
-      body += chunk.toString();
-    });
-    req.on('end', async () => {
-      res(JSON.parse(body));
-    });
-    req.on('error', (err) => {
-      rej(err);
-    });
-  });
+export const getRequestBody = async (request: IncomingMessage): Promise<User | undefined> => {
+  const boby = [];
+
+  for await (const chunk of request) {
+    boby.push(chunk);
+  }
+
+  const data = Buffer.concat(boby).toString();
+
+  if (data) {
+    return JSON.parse(data);
+  }
 };
 
 export const getRequestParamId = (req: IncomingMessage) => {

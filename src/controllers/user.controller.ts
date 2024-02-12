@@ -59,7 +59,7 @@ export class UserController {
     try {
       const id = getRequestParamId(req);
       const data = await userService.delete(id);
-      responseData(res, 204, data);
+      responseData(res, 204, { message: data });
     } catch (error) {
       throw error;
     }

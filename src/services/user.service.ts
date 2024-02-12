@@ -34,7 +34,7 @@ class UserService {
   }
 
   async delete(id: string) {
-    const user = await this.getOne(id);
+    await this.getOne(id);
     return await this.dbService.delete(id);
   }
 }

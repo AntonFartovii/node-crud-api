@@ -11,7 +11,7 @@ const headers = { 'Content-Type': 'application/json' };
 
 class Server {
   routes: RoutesServer;
-  private server: http.Server;
+  public server: http.Server;
 
   constructor() {
     this.server = http.createServer();
@@ -47,16 +47,14 @@ class Server {
         } else {
           throw new HttpError(404, 'This endpoint does not exist!');
         }
-      } else {
-        throw new HttpError(404, 'This endpoint does not exist!');
       }
     } catch (error) {
       if (error instanceof HttpError) {
         res.writeHead(error.statusCode, headers);
         res.end(JSON.stringify(error.getData()));
       } else {
-        res.writeHead(404, headers);
-        res.end(JSON.stringify({ error: 'This endpoint does not exist!' }));
+        res.writeHead(500, headers);
+        res.end(JSON.stringify({ error: 'Server error' }));
       }
     }
   }

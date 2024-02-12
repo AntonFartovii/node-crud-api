@@ -4,6 +4,9 @@
     "prettier",
     "eslint-config-prettier"
   ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "parserOptions": {
     "project": "tsconfig.json",
     "ecmaVersion": "latest",
@@ -17,6 +20,7 @@
     "node": true
   },
   "rules": {
+    "no-undef": "off",
     "no-useless-catch": "off",
     "no-unused-vars": "off",
     "no-var": "error",
