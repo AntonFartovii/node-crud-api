@@ -1,7 +1,7 @@
-import {validate as uuidValidate, version as uuidVersion} from 'uuid';
-import {HttpError} from '../exeptions';
-import {IncomingMessage, ServerResponse} from 'http';
-import {User} from '../models/user.entity';
+import { validate as uuidValidate, version as uuidVersion } from 'uuid';
+import { HttpError } from '../exeptions';
+import { IncomingMessage, ServerResponse } from 'http';
+import { User } from '../models/user.entity';
 
 export function parsePathExpress(path?: string) {
   if (!path) {
@@ -27,7 +27,7 @@ export const responseData = (
   statusCode: number,
   data?: User | User[] | string | null
 ) => {
-  res.writeHead(statusCode, {'Content-type': 'application/json'});
+  res.writeHead(statusCode, { 'Content-type': 'application/json' });
   res.end(JSON.stringify(data));
 };
 

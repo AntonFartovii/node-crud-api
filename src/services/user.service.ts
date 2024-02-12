@@ -1,7 +1,7 @@
-import {DbService} from '../db/db.service';
-import {CreateUserDto, UpdateUserDto, User} from '../models/user.entity';
-import {v4 as uuidv4} from 'uuid';
-import {HttpError} from '../exeptions';
+import { DbService } from '../db/db.service';
+import { CreateUserDto, UpdateUserDto, User } from '../models/user.entity';
+import { v4 as uuidv4 } from 'uuid';
+import { HttpError } from '../exeptions';
 
 class UserService {
   dbService: DbService<User>;
@@ -12,7 +12,7 @@ class UserService {
 
   async create(dto: CreateUserDto) {
     const id = uuidv4();
-    const user = {...dto, id} as User;
+    const user = { ...dto, id } as User;
     return await this.dbService.create(user);
   }
 

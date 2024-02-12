@@ -6,6 +6,7 @@
   "scripts": {
     "start:dev": "nodemon index.ts",
     "start:prod": "tsc && node ./dist/index.js",
+    "start:multi": "npx nodemon --exec ts-node index.ts --multi",
     "lint:fix": "eslint --fix",
     "format: fix": "prettier . --write"
   },

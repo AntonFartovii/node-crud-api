@@ -1,4 +1,4 @@
-import {UpdateUserDto} from '../models/user.entity';
+import { UpdateUserDto } from '../models/user.entity';
 import process from 'node:process';
 
 export class DbService<T extends { id: string }> {
@@ -15,12 +15,10 @@ export class DbService<T extends { id: string }> {
     process.send && process.send(this.list);
   }
 
-
   async create(entity: T) {
     this.list.push(entity);
     this.sendList();
     return entity;
-
   }
 
   async findAll() {
