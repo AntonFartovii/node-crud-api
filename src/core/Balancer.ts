@@ -7,12 +7,10 @@ const host = process.env.HOST;
 export class Balancer {
   requestIteration: number;
   startPort: number;
-  i: number;
 
   constructor(startPort: number) {
-    this.requestIteration = 1;
+    this.requestIteration = 0;
     this.startPort = startPort;
-    this.i = 1;
   }
 
   getNextPort(startPort: number) {
@@ -27,7 +25,7 @@ export class Balancer {
       console.log(`Request to proxy port ${nextPort}`);
       const options = {
         hostname: host,
-        port: PORT + this.i,
+        port: nextPort,
         path: request.url,
         method: request.method,
         headers: request.headers,
@@ -52,8 +50,6 @@ export class Balancer {
       request.on('end', () => {
         requestToCP.end();
       });
-
-      this.i === countCPUs ? (this.i = 1) : this.i++;
     });
 
     server.listen(PORT, host, () => {

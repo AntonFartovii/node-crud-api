@@ -9,7 +9,7 @@ import { Balancer } from './src/core/Balancer';
 const isMultiMode = process.argv.includes('--multi');
 
 export const countCPUs = cpus().length;
-export const PORT = Number(process.env.PORT) || 4000;
+export const PORT = Number(process.env.PORT);
 const host = process.env.HOST;
 const app = new Server();
 app.useRouter('/api', userRouter);
