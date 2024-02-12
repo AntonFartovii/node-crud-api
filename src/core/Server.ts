@@ -45,10 +45,10 @@ class Server {
             throw new HttpError(404, 'This endpoint does not exist!');
           }
         } else {
-          throw new HttpError(404, ' does not exist');
+          throw new HttpError(404, 'This endpoint does not exist!');
         }
       } else {
-        throw new HttpError(404, ' does not exist');
+        throw new HttpError(404, 'This endpoint does not exist!');
       }
     } catch (error) {
       if (error instanceof HttpError) {

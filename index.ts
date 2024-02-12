@@ -6,6 +6,7 @@ import cluster, {Worker} from 'cluster';
 import process from 'node:process';
 import {createServer as createHttpServer, request as httpRequest} from 'http';
 
+
 export const countCPUs = cpus().length;
 export const PORT = Number(process.env.PORT) || 4000;
 const host = process.env.HOST;
@@ -47,10 +48,12 @@ if (cluster.isPrimary) {
       method: request.method,
       headers: request.headers,
     };
-    console.log(options);
+    // console.log(options);
     const requestToCP = httpRequest(options, (responseFromCP) => {
       response.statusCode = responseFromCP.statusCode || 500;
+      let body = '';
       responseFromCP.on('data', chunk => {
+        body += chunk.toString();
         response.write(chunk);
       });
       responseFromCP.on('end', () => {
