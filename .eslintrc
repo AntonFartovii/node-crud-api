@@ -8,6 +8,7 @@
     "@typescript-eslint"
   ],
   "parserOptions": {
+    "tsconfigRootDir": "./",
     "project": "tsconfig.json",
     "ecmaVersion": "latest",
     "sourceType": "module"
